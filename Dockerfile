@@ -28,6 +28,21 @@ RUN pip install --upgrade pip && \
 
 # Copy the rest of your application code into the container.
 # The '.' indicates copying from the current directory on your host to the WORKDIR in the container.
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    software-properties-common \
+    build-essential \
+    libgl1-mesa-glx \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    ffmpeg \
+    libwebp-dev \
+    libglvnd0 \
+    && rm -rf /var/lib/apt/lists/*
+
+
 COPY . .
 
 # If your application is a web server or API, expose the port it listens on.
@@ -38,4 +53,6 @@ EXPOSE 8000
 # Define the command to run your application when the container starts.
 # This assumes your main script is 'app.py'. Adjust if your entry point is different.
 # For example:
-CMD ["python", "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"] # For FastAPI/Uvicorn
+#CMD ["python3", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] # For FastAPI/Uvicorn
+CMD python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
+

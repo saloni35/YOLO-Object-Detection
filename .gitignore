@@ -1,0 +1,5 @@
+venv/
+my_env/
+new_env/
+__pycache__/
+.env

@@ -5,6 +5,12 @@ Navigate to your project's root directory (where the Dockerfile is located) in y
 docker build -t my-object-detector .
 ```
 
+Note- You can specify BUILD_TYPE arg with option "cpu" if the host os does not have NVIDIA GPU support(e.g.on MacOS)
+
+```
+docker build --build-arg BUILD_TYPE=cpu -t my-object-detector .
+```
+
 **Running the Docker Container**
 
 ```

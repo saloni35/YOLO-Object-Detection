@@ -3,6 +3,9 @@
 # Adjust the Python version (e.g., 3.8, 3.9, 3.10, 3.11) to match what your application uses.
 FROM python:3.13.2-slim-bullseye
 
+ # Default to GPU, or 'cpu'
+ARG BUILD_TYPE=gpu
+
 # Set the working directory inside the container.
 # All subsequent commands will be executed relative to this directory.
 WORKDIR /app
@@ -36,6 +39,12 @@ COPY requirements.txt .
 # 'upgrade pip' ensures you're using a recent version of pip.
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
+
+RUN if [ "$BUILD_TYPE" = "cpu" ]; then \
+        pip install --no-cache-dir -r requirements_cpu.txt; \
+    else \
+        pip install --no-cache-dir -r requirements.txt; \
+    fi
 
 # Copy the rest of your application code into the container.
 # The '.' indicates copying from the current directory on your host to the WORKDIR in the container.

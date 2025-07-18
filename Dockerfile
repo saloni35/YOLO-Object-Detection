@@ -33,15 +33,15 @@ RUN apt-get update && \
 # We copy this first to leverage Docker's build cache.
 # If requirements.txt doesn't change, Docker won't re-run the pip install step.
 COPY requirements.txt .
+COPY requirements_cpu.txt .
 
 # Install Python dependencies from requirements.txt.
 # '--no-cache-dir' prevents pip from storing cache, reducing image size.
 # 'upgrade pip' ensures you're using a recent version of pip.
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip
 
 RUN if [ "$BUILD_TYPE" = "cpu" ]; then \
-        pip install --no-cache-dir -r requirements_cpu.txt; \
+        pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu -r requirements_cpu.txt; \
     else \
         pip install --no-cache-dir -r requirements.txt; \
     fi

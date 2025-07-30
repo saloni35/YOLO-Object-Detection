@@ -27,6 +27,7 @@ RUN apt-get update && \
     ffmpeg \
     libwebp-dev \
     libglvnd0 \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements.txt file into the container.
@@ -56,8 +57,6 @@ COPY . .
 # If your application is purely a command-line script, you can remove this line.
 EXPOSE 8000
 
-# Define the command to run your application when the container starts.
-# This assumes your main script is 'app.py'. Adjust if your entry point is different.
-# For example:
-CMD python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
-
+# Set the entrypoint for the container.
+# This script will run when the container starts.
+CMD python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 & tail -f /dev/null
